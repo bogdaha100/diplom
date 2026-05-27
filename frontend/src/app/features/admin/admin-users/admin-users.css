@@ -1,0 +1,266 @@
+.page {
+    padding: 24px;
+    background: #F4F9FE;
+    min-height: calc(100vh - 50px);
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0C447C;
+}
+
+.search-row {
+    margin-bottom: 16px;
+}
+
+.search-inp {
+    width: 100%;
+    background: #fff;
+    border: 0.5px solid #B5D4F4;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 14px;
+    color: #0C447C;
+    outline: none;
+}
+
+.search-inp:focus {
+    border-color: #185FA5;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 0.5px solid #B5D4F4;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.table thead tr {
+    background: #B5D4F4;
+}
+
+.table th {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0C447C;
+    text-align: left;
+}
+
+.table td {
+    padding: 12px 16px;
+    font-size: 13px;
+    border-bottom: 0.5px solid #E6F1FB;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    background: #F4F9FE;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #185FA5;
+    color: #E6F1FB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #0C447C;
+}
+
+.col-text {
+    color: #185FA5;
+    font-size: 13px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.b-admin {
+    background: #F5E6FB;
+    color: #6B21A8;
+}
+
+.b-manager {
+    background: #FAEEDA;
+    color: #633806;
+}
+
+.b-employee {
+    background: #EAF3DE;
+    color: #27500A;
+}
+
+.actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.empty {
+    padding: 24px;
+    text-align: center;
+    color: #378ADD;
+    font-size: 14px;
+}
+
+.dialog-form {
+    padding: 8px 0;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+.field-label {
+    font-size: 12px;
+    color: #185FA5;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.field-input {
+    font-size: 14px;
+    color: #0C447C;
+    background: #fff;
+    border: 0.5px solid #B5D4F4;
+    border-radius: 8px;
+    padding: 9px 12px;
+    outline: none;
+}
+
+.field-input:focus {
+    border-color: #185FA5;
+}
+
+.field-input.error {
+    border-color: #C0392B;
+    background: #FEF0F0;
+}
+
+.error-text {
+    font-size: 12px;
+    color: #C0392B;
+    margin-top: 4px;
+}
+
+.dialog-btns {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+:host ::ng-deep .p-button.p-button-danger.p-button-text,
+:host ::ng-deep .p-button.p-button-text {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 4px;
+}
+
+.roles-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0C447C;
+    margin: 24px 0 16px;
+}
+
+.roles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.role-card {
+    background: #fff;
+    border: 0.5px solid #B5D4F4;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.role-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.role-icon {
+    font-size: 18px;
+}
+
+.role-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0C447C;
+}
+
+.role-desc {
+    font-size: 12px;
+    color: #378ADD;
+    margin-bottom: 12px;
+}
+
+.role-rights {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.right-item {
+    font-size: 13px;
+    color: #185FA5;
+}
+
+.role-count {
+    font-size: 12px;
+    color: #378ADD;
+    border-top: 0.5px solid #E6F1FB;
+    padding-top: 10px;
+    font-weight: 500;
+}
+
+:host ::ng-deep .p-dialog-content {
+    overflow: visible !important;
+}
+
+:host ::ng-deep .p-dialog {
+    overflow: visible !important;
+}

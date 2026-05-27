@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique @db.VarChar(50)
+  description String?
+  users       User[]
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  full_name     String   @db.VarChar(150)
+  email         String   @unique @db.VarChar(150)
+  password_hash String   @db.VarChar(255)
+  role_id       Int
+  created_at    DateTime @default(now())
+  role          Role     @relation(fields: [role_id], references: [id])
+  orders_created  Order[] @relation("CreatedBy")
+  orders_assigned Order[] @relation("AssignedTo")
+  history         OrderHistory[]
+}
+
+model Order {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(200)
+  description String?
+  status      String    @default("new") @db.VarChar(50)
+  created_by  Int
+  assigned_to Int?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime? @updatedAt
+  deadline    DateTime?
+  creator     User      @relation("CreatedBy", fields: [created_by], references: [id])
+  assignee    User?     @relation("AssignedTo", fields: [assigned_to], references: [id])
+  documents   Document[]
+  history     OrderHistory[]
+}
+
+model Document {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(200)
+  file_path   String   @db.VarChar(500)
+  file_type   String   @db.VarChar(50)
+  order_id    Int
+  uploaded_by Int
+  uploaded_at DateTime @default(now())
+  order       Order    @relation(fields: [order_id], references: [id], onDelete: Cascade)
+}
+
+model OrderHistory {
+  id         Int      @id @default(autoincrement())
+  order_id   Int
+  old_status String   @db.VarChar(50)
+  new_status String   @db.VarChar(50)
+  changed_by Int
+  changed_at DateTime @default(now())
+  order      Order    @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [changed_by], references: [id])
+}

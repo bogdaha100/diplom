@@ -1,0 +1,24 @@
+<form class="form">
+    <div class="card">
+        <div class="card-header">
+            <h2>Корпоративный портал</h2>
+            <div class="subtitle">Система управления заказами и документами</div>
+        </div>
+        <label for="username">Email</label>
+        <input pInputText pSize="large" type="email" id="email" [(ngModel)]="inputEmail" name="email"
+            (blur)="validateEmail()" />
+        @if (emailError) {
+        <small class="p-error">{{ emailError }}</small>
+        }
+        <label for="password">Password</label>
+        <input pInputText pSize="large" type="password" id="password" [(ngModel)]="inputPassword" name="password"
+            (blur)="validatePassword()" />
+        @if (passwordError) {
+        <small class="p-error">{{ passwordError }}</small>
+        }
+        <div>
+            <p-button label="Войти" (onClick)="onLogin()" />
+        </div>
+
+    </div>
+</form>

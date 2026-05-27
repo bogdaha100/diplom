@@ -1,0 +1,114 @@
+<app-topbar (menuClick)="sidebar.open()" />
+<app-sidebar #sidebar />
+
+<div class="page">
+    <div class="page-header">
+        <div class="page-title">Отчёты</div>
+        <p-button label="📥 Экспорт в Excel" (onClick)="exportToExcel()"
+            [style]="{'background': '#27500A', 'border-color': '#27500A', 'color': '#EAF3DE'}">
+        </p-button>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-label">Всего заказов</div>
+            <div class="stat-val">{{ stats.total }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">В работе</div>
+            <div class="stat-val">{{ stats.inProgress }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Завершено</div>
+            <div class="stat-val">{{ stats.done }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Новые</div>
+            <div class="stat-val">{{ stats.new }}</div>
+        </div>
+    </div>
+
+    <div class="two-col">
+        <div class="card" style="margin-bottom:0;">
+            <div class="card-title">📊 Заказы по статусам</div>
+            <div class="progress-row">
+                <div class="progress-label"><span>Новые</span><span>{{ stats.new }}</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="getProgressWidth(stats.new)"
+                        style="background:#185FA5;"></div>
+                </div>
+            </div>
+            <div class="progress-row">
+                <div class="progress-label"><span>В работе</span><span>{{ stats.inProgress }}</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="getProgressWidth(stats.inProgress)"
+                        style="background:#378ADD;"></div>
+                </div>
+            </div>
+            <div class="progress-row">
+                <div class="progress-label"><span>Завершены</span><span>{{ stats.done }}</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="getProgressWidth(stats.done)"
+                        style="background:#639922;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+            <div class="card-title">👤 Заказы по исполнителям</div>
+            @for (item of assigneeList; track item.name) {
+            <div class="progress-row">
+                <div class="progress-label"><span>{{ item.name }}</span><span>{{ item.count }}</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="getProgressWidth(item.count)"
+                        style="background:#185FA5;"></div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="filter-card">
+        <span class="filter-label">📅 Период:</span>
+        <p-datepicker [(ngModel)]="dateFrom" name="dateFrom" dateFormat="dd.mm.yy" placeholder="Дата от"
+            (ngModelChange)="applyFilter()" styleClass="date-picker">
+        </p-datepicker>
+        <span class="filter-sep">—</span>
+        <p-datepicker [(ngModel)]="dateTo" name="dateTo" dateFormat="dd.mm.yy" placeholder="Дата до"
+            (ngModelChange)="applyFilter()" styleClass="date-picker">
+        </p-datepicker>
+        <button class="btn-reset" (click)="resetFilter()">Сбросить</button>
+    </div>
+
+    <div class="card">
+        <div class="card-title">📋 Заказы за период</div>
+        <div class="results-info">Найдено: {{ filteredOrders.length }} заказов</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Наименование</th>
+                    <th>Статус</th>
+                    <th>Исполнитель</th>
+                    <th>Дата создания</th>
+                    <th>Дедлайн</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (order of filteredOrders; track order.id) {
+                <tr>
+                    <td class="order-name">{{ order.title }}</td>
+                    <td><span class="badge" [class]="'b-' + order.status">{{ getStatusLabel(order.status) }}</span></td>
+                    <td class="col-text">{{ order.assignee?.full_name ?? 'Не назначен' }}</td>
+                    <td class="col-text">{{ formatDate(order.created_at) }}</td>
+                    <td class="col-text">{{ formatDate(order.deadline) }}</td>
+                </tr>
+                }
+                @if (filteredOrders.length === 0) {
+                <tr>
+                    <td colspan="5" class="empty">Заказов за выбранный период не найдено</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

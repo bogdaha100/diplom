@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "primeicons/primeicons.css";
+
+* {
+    font-family: 'Inter', sans-serif;
+    user-select: none;
+}
+
+body {
+    font-size: 16px;
+}
+
+input,
+textarea,
+td,
+th,
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5 {
+    user-select: text;
+}

@@ -1,0 +1,49 @@
+<app-topbar (menuClick)="sidebar.open()" />
+<app-sidebar #sidebar />
+
+<div class="page">
+    <div class="page-header">
+        <button class="back-btn" (click)="goBack()">← Назад</button>
+        <div class="page-title">Создать заказ</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">📋 Новый заказ</div>
+
+        <div class="field-grid">
+            <div class="field full-width">
+                <div class="field-label">Наименование *</div>
+                <input class="field-input" [class.error]="titleError" placeholder="Введите наименование..."
+                    [(ngModel)]="title" name="title" />
+                @if (titleError) {
+                <div class="error-text">{{ titleError }}</div>
+                }
+            </div>
+
+            <div class="field">
+                <div class="field-label">Исполнитель</div>
+                <p-select [(ngModel)]="assigned_to" name="assigned_to" [options]="users" optionLabel="full_name"
+                    optionValue="id" placeholder="Не назначен" styleClass="w-full">
+                </p-select>
+            </div>
+
+            <div class="field">
+                <div class="field-label">Дедлайн</div>
+                <p-datepicker [(ngModel)]="deadline" name="deadline" dateFormat="dd.mm.yy" placeholder="Выберите дату"
+                    styleClass="w-full">
+                </p-datepicker>
+            </div>
+
+            <div class="field full-width">
+                <div class="field-label">Описание</div>
+                <textarea class="field-textarea" placeholder="Введите описание..." [(ngModel)]="description"
+                    name="description"></textarea>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn" (click)="onSubmit()">✓ Создать заказ</button>
+            <button class="btn-cancel" (click)="goBack()">Отмена</button>
+        </div>
+    </div>
+</div>

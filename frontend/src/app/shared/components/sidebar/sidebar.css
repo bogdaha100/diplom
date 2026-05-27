@@ -1,0 +1,37 @@
+.divider {
+    height: 1px;
+    background-color: #185FA5;
+    margin: 8px 4px;
+}
+
+a {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #185FA5;
+    text-decoration: none;
+    margin-bottom: 4px;
+    transition: background 0.2s, color 0.2s;
+}
+
+a:hover {
+    background: #E6F1FB;
+    color: #0C447C;
+}
+
+a.active {
+    background: #185FA5;
+    color: #E6F1FB;
+}
+
+a:last-child {
+    color: #C0392B;
+}
+
+a:last-child:hover {
+    background: #FEF0F0;
+    color: #C0392B;
+}

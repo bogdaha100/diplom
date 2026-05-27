@@ -1,0 +1,30 @@
+.topbar {
+    background: #185FA5;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topbar-title {
+    color: #E6F1FB;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.topbar-user {
+    color: #85B7EB;
+    font-size: 13px;
+}

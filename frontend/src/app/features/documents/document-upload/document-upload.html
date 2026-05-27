@@ -1,0 +1,62 @@
+<app-topbar (menuClick)="sidebar.open()" />
+<app-sidebar #sidebar />
+
+<div class="page">
+    <div class="page-header">
+        <button class="back-btn" (click)="goBack()">← Назад</button>
+        <div class="page-title">Загрузить документ</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">📄 Новый документ</div>
+
+        <div class="field">
+            <div class="field-label">Наименование *</div>
+            <input class="field-input" [class.error]="titleError" placeholder="Введите наименование..."
+                [(ngModel)]="title" name="title" />
+            @if (titleError) {
+            <div class="error-text">{{ titleError }}</div>
+            }
+        </div>
+
+        <div class="field">
+            <div class="field-label">Привязать к заказу *</div>
+            <p-select [(ngModel)]="order_id" name="order_id" [options]="orders" optionLabel="title" optionValue="id"
+                placeholder="Выберите заказ..." styleClass="w-full" [class.error]="orderError">
+            </p-select>
+            @if (orderError) {
+            <div class="error-text">{{ orderError }}</div>
+            }
+        </div>
+
+        <div class="field">
+            <div class="field-label">Файл *</div>
+            <div class="upload-area" (click)="fileInput.click()" (dragover)="$event.preventDefault()"
+                (dragleave)="isDragging = false" (dragenter)="isDragging = true" [class.dragging]="isDragging"
+                (drop)="onDrop($event)">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Нажмите или перетащите файл сюда</div>
+                <div class="upload-sub">Поддерживаются PDF, DOCX, XLSX</div>
+            </div>
+            <input #fileInput type="file" style="display:none" accept=".pdf,.docx,.xlsx"
+                (change)="onFileSelected($event)" />
+            @if (selectedFile) {
+            <div class="uploaded-file">
+                <span>📄</span>
+                <span class="file-name">{{ selectedFile.name }}</span>
+                <span class="file-size">{{ (selectedFile.size / 1024).toFixed(0) }} КБ</span>
+            </div>
+            }
+            @if (fileError) {
+            <div class="error-text">{{ fileError }}</div>
+            }
+        </div>
+
+        <div class="btn-row">
+            <p-button label="↑ Загрузить" (onClick)="onSubmit()"
+                [style]="{'background': '#185FA5', 'border-color': '#185FA5'}">
+            </p-button>
+            <button class="btn-cancel" (click)="goBack()">Отмена</button>
+        </div>
+    </div>
+</div>

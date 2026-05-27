@@ -1,0 +1,166 @@
+<app-topbar (menuClick)="sidebar.open()" />
+<app-sidebar #sidebar />
+
+<div class="page">
+    <div class="page-header">
+        <div class="page-title">Пользователи</div>
+        <p-button label="+ Добавить пользователя" (onClick)="openAddDialog()"
+            [style]="{'background': '#185FA5', 'border-color': '#185FA5'}">
+        </p-button>
+    </div>
+
+    <div class="search-row">
+        <input class="search-inp" placeholder="🔍 Поиск по имени или email..." [(ngModel)]="searchQuery"
+            (input)="onSearch()" />
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Пользователь</th>
+                <th>Email</th>
+                <th>Роль</th>
+                <th>Дата создания</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (user of filteredUsers; track user.id) {
+            <tr>
+                <td>
+                    <div class="user-info">
+                        <div class="avatar">{{ getInitials(user.full_name) }}</div>
+                        <span class="user-name">{{ user.full_name }}</span>
+                    </div>
+                </td>
+                <td class="col-text">{{ user.email }}</td>
+                <td>
+                    <span class="badge" [class]="getRoleBadgeClass(user.role?.name)">
+                        {{ user.role?.name }}
+                    </span>
+                </td>
+                <td class="col-text">{{ formatDate(user.created_at) }}</td>
+                <td>
+                    <div class="actions">
+                        <p-button icon="pi pi-pencil" [text]="true" [plain]="true" (onClick)="openEditDialog(user)">
+                        </p-button>
+                        <p-button icon="pi pi-times" severity="danger" [text]="true" [plain]="true"
+                            (onClick)="onDeleteUser(user.id)">
+                        </p-button>
+                    </div>
+                </td>
+            </tr>
+            }
+            @if (filteredUsers.length === 0) {
+            <tr>
+                <td colspan="5" class="empty">Пользователи не найдены</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="roles-title">Роли и права доступа</div>
+    <div class="roles-grid">
+        @for (role of roles; track role.id) {
+        <div class="role-card">
+            <div class="role-header">
+                <span class="role-icon">
+                    @if (role.name === 'Администратор') { 🔴 }
+                    @if (role.name === 'Менеджер') { 🟡 }
+                    @if (role.name === 'Сотрудник предприятия') { 🟢 }
+                </span>
+                <span class="role-name">{{ role.name }}</span>
+            </div>
+            <div class="role-desc">{{ role.description }}</div>
+            <div class="role-rights">
+                @if (role.name === 'Администратор') {
+                <div class="right-item">✓ Управление пользователями</div>
+                <div class="right-item">✓ Управление ролями</div>
+                <div class="right-item">✓ Все права менеджера</div>
+                }
+                @if (role.name === 'Менеджер') {
+                <div class="right-item">✓ Создание заказов</div>
+                <div class="right-item">✓ Изменение статусов</div>
+                <div class="right-item">✓ Загрузка документов</div>
+                }
+                @if (role.name === 'Сотрудник предприятия') {
+                <div class="right-item">✓ Просмотр заказов</div>
+                <div class="right-item">✓ Просмотр документов</div>
+                <div class="right-item">✓ Редактирование профиля</div>
+                }
+            </div>
+            <div class="role-count">
+                Пользователей: {{ getUserCountByRole(role.name) }}
+            </div>
+        </div>
+        }
+    </div>
+</div>
+
+<p-dialog header="➕ Добавить пользователя" [(visible)]="showAddDialog" [modal]="true" [style]="{'width': '420px'}"
+    [contentStyle]="{'min-height': '400px'}" [closable]="true">
+    <div class="dialog-form">
+        <div class="field">
+            <div class="field-label">Полное имя *</div>
+            <input class="field-input" [class.error]="nameError" placeholder="Введите имя..."
+                [(ngModel)]="newUser.full_name" name="full_name" />
+            @if (nameError) { <div class="error-text">{{ nameError }}</div> }
+        </div>
+        <div class="field">
+            <div class="field-label">Email *</div>
+            <input class="field-input" [class.error]="emailError" placeholder="email@company.ru"
+                [(ngModel)]="newUser.email" name="email" />
+            @if (emailError) { <div class="error-text">{{ emailError }}</div> }
+        </div>
+        <div class="field">
+            <div class="field-label">Пароль *</div>
+            <input class="field-input" [class.error]="passwordError" type="password" placeholder="••••••••"
+                [(ngModel)]="newUser.password" name="password" />
+            @if (passwordError) { <div class="error-text">{{ passwordError }}</div> }
+        </div>
+        <div class="field">
+            <div class="field-label">Роль *</div>
+            <p-select [(ngModel)]="newUser.role_id" name="role_id" [options]="roles" optionLabel="name" optionValue="id"
+                placeholder="Выберите роль..." styleClass="w-full">
+            </p-select>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <div class="dialog-btns">
+            <p-button label="Создать" (onClick)="onAddUser()"
+                [style]="{'background': '#185FA5', 'border-color': '#185FA5'}">
+            </p-button>
+            <p-button label="Отмена" [text]="true" (onClick)="showAddDialog = false">
+            </p-button>
+        </div>
+    </ng-template>
+</p-dialog>
+
+<p-dialog header="✏ Редактировать пользователя" [(visible)]="showEditDialog" [modal]="true" [style]="{'width': '420px'}"
+    [contentStyle]="{'min-height': '250px'}" [closable]="true">
+    @if (editUser) {
+    <div class="dialog-form">
+        <div class="field">
+            <div class="field-label">Полное имя</div>
+            <input class="field-input" [(ngModel)]="editUser.full_name" name="edit_name" />
+        </div>
+        <div class="field">
+            <div class="field-label">Роль</div>
+            <p-select [(ngModel)]="editUser.role_id" name="edit_role" [options]="roles" optionLabel="name"
+                optionValue="id" styleClass="w-full">
+            </p-select>
+        </div>
+    </div>
+    }
+    <ng-template pTemplate="footer">
+        <div class="dialog-btns">
+            <p-button label="Сохранить" (onClick)="onEditUser()"
+                [style]="{'background': '#185FA5', 'border-color': '#185FA5'}">
+            </p-button>
+            <p-button label="Отмена" [text]="true" (onClick)="showEditDialog = false">
+            </p-button>
+        </div>
+    </ng-template>
+</p-dialog>
+
+<p-confirmdialog />

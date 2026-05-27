@@ -1,0 +1,114 @@
+<app-topbar (menuClick)="sidebar.open()" />
+<app-sidebar #sidebar />
+
+<div class="page">
+
+    <!-- Приветственный баннер -->
+    <div class="welcome-banner">
+        <div class="welcome-text">
+            <h2>Добро пожаловать, {{ user?.full_name }}!</h2>
+            <span>{{ user?.role }}</span>
+        </div>
+        <span class="welcome-icon">👋</span>
+    </div>
+
+    <!-- Карточки статистики -->
+    <div class="stat-grid">
+        <div class="stat-card">
+            <span class="stat-icon">📋</span>
+            <span class="stat-label">Всего заказов</span>
+            <span class="stat-val">{{ stats?.totalOrders ?? 0 }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-icon">⚙️</span>
+            <span class="stat-label">В работе</span>
+            <span class="stat-val">{{ stats?.inProgressOrders ?? 0 }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-icon">✅</span>
+            <span class="stat-label">Завершено</span>
+            <span class="stat-val">{{ stats?.doneOrders ?? 0 }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-icon">📄</span>
+            <span class="stat-label">Документов</span>
+            <span class="stat-val">{{ stats?.totalDocuments ?? 0 }}</span>
+        </div>
+    </div>
+
+    <!-- Две колонки -->
+    <div class="two-col">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📋 Последние заказы</span>
+                <a routerLink="/orders" class="card-link">Все заказы →</a>
+            </div>
+            @for (order of latestOrders; track order.id) {
+            <div class="order-row">
+                <span class="order-num">#{{ order.id }}</span>
+                <span class="order-name">{{ order.title }}</span>
+                <span class="badge" [class]="'b-' + order.status">{{ order.status }}</span>
+            </div>
+            }
+            @if (latestOrders.length === 0) {
+            <div style="color:#378ADD; font-size:13px;">Заказов пока нет</div>
+            }
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📄 Последние документы</span>
+                <a routerLink="/documents" class="card-link">Все документы →</a>
+            </div>
+            @for (doc of latestDocuments; track doc.id) {
+            <div class="doc-row">
+                <span>📄</span>
+                <span class="doc-name">{{ doc.title }}</span>
+                <span class="doc-meta">Заказ #{{ doc.order.id }}</span>
+            </div>
+            }
+            @if (latestDocuments.length === 0) {
+            <div style="color:#378ADD; font-size:13px;">Документов пока нет</div>
+            }
+        </div>
+    </div>
+
+    <!-- Прогресс-бары -->
+    <div class="progress-section">
+        <span class="card-title">📊 Статистика по статусам</span>
+        <div class="progress-row">
+            <div class="progress-label">
+                <span>Новые</span>
+                <span>{{ stats?.newOrders ?? 0 }} из {{ stats?.totalOrders ?? 0 }}</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"
+                    [style.width.%]="stats?.totalOrders ? (stats.newOrders / stats.totalOrders) * 100 : 0"
+                    style="background: #185FA5;"></div>
+            </div>
+        </div>
+        <div class="progress-row">
+            <div class="progress-label">
+                <span>В работе</span>
+                <span>{{ stats?.inProgressOrders ?? 0 }} из {{ stats?.totalOrders ?? 0 }}</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"
+                    [style.width.%]="stats?.totalOrders ? (stats.inProgressOrders / stats.totalOrders) * 100 : 0"
+                    style="background: #378ADD;"></div>
+            </div>
+        </div>
+        <div class="progress-row">
+            <div class="progress-label">
+                <span>Завершены</span>
+                <span>{{ stats?.doneOrders ?? 0 }} из {{ stats?.totalOrders ?? 0 }}</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"
+                    [style.width.%]="stats?.totalOrders ? (stats.doneOrders / stats.totalOrders) * 100 : 0"
+                    style="background: #639922;"></div>
+            </div>
+        </div>
+    </div>
+
+</div>

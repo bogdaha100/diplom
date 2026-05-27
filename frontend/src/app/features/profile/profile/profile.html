@@ -1,0 +1,88 @@
+<app-topbar (menuClick)="sidebar.open()" />
+<app-sidebar #sidebar />
+
+<div class="page">
+    <div class="page-title">Профиль</div>
+
+    @if (user) {
+    <div class="two-col">
+
+        <!-- Левая колонка -->
+        <div class="card">
+            <div class="avatar-block">
+                <div class="avatar">{{ getInitials(user.full_name) }}</div>
+                <div class="user-name">{{ user.full_name }}</div>
+                <div class="user-email">{{ user.email }}</div>
+                <span class="badge" [class]="getRoleBadgeClass(user.role?.name)">
+                    {{ user.role?.name }}
+                </span>
+            </div>
+            <div class="divider"></div>
+            <div class="info-row">
+                <span class="info-label">ID пользователя</span>
+                <span class="info-val">#{{ user.id }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Дата регистрации</span>
+                <span class="info-val">{{ formatDate(user.created_at) }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Роль</span>
+                <span class="info-val">{{ user.role?.name }}</span>
+            </div>
+        </div>
+
+        <!-- Правая колонка -->
+        <div class="card">
+            <div class="card-title">✏ Редактировать профиль</div>
+
+            <div class="field-grid">
+                <div class="field">
+                    <div class="field-label">Полное имя</div>
+                    <input class="field-input" [(ngModel)]="fullName" name="fullName" />
+                </div>
+                <div class="field">
+                    <div class="field-label">Email (только чтение)</div>
+                    <input class="field-input readonly" [value]="user.email" readonly />
+                </div>
+            </div>
+
+            <div class="divider-section"></div>
+            <div class="section-title">🔒 Изменить пароль</div>
+
+            <div class="field-grid">
+                <div class="field">
+                    <div class="field-label">Новый пароль</div>
+                    <input class="field-input" type="password" placeholder="••••••••" [(ngModel)]="newPassword"
+                        name="newPassword" />
+                </div>
+                <div class="field">
+                    <div class="field-label">Повтор пароля</div>
+                    <input class="field-input" type="password" placeholder="••••••••" [(ngModel)]="confirmPassword"
+                        name="confirmPassword" />
+                </div>
+            </div>
+
+            @if (passwordError) {
+            <div class="error-text">{{ passwordError }}</div>
+            }
+
+            @if (successMessage) {
+            <div class="success-text">✓ {{ successMessage }}</div>
+            }
+
+            <div class="btn-row">
+                <p-button label="Сохранить изменения" (onClick)="onSave()"
+                    [style]="{'background': '#185FA5', 'border-color': '#185FA5'}">
+                </p-button>
+                <button class="btn-cancel" (click)="onCancel()">Отмена</button>
+            </div>
+        </div>
+
+    </div>
+    }
+
+    @if (!user) {
+    <div class="loading">Загрузка...</div>
+    }
+</div>

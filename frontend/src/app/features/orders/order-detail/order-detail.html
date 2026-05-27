@@ -1,0 +1,91 @@
+<app-topbar (menuClick)="sidebar.open()" />
+<app-sidebar #sidebar />
+
+<div class="page">
+
+    <!-- Заголовок -->
+    <div class="page-header">
+        <button class="back-btn" (click)="goBack()">← Назад</button>
+        @if (order) {
+        <div class="page-title">Заказ #{{ order.id }} — {{ order.title }}</div>
+        <span class="badge" [class]="'b-' + order.status">
+            {{ getStatusLabel(order.status) }}
+        </span>
+        }
+    </div>
+
+    @if (order) {
+    <!-- Детали заказа -->
+    <div class="card">
+        <div class="card-title">📋 Детали заказа</div>
+        <div class="field-grid">
+            <div>
+                <div class="field-label">Создан</div>
+                <div class="field-val">{{ formatDate(order.created_at) }} · {{ order.creator?.full_name }}</div>
+            </div>
+            <div>
+                <div class="field-label">Дедлайн</div>
+                <div class="field-val">{{ formatDate(order.deadline) }}</div>
+            </div>
+            <div>
+                <div class="field-label">Исполнитель</div>
+                <div class="field-val">{{ order.assignee?.full_name ?? 'Не назначен' }}</div>
+            </div>
+            <div>
+                <div class="field-label">Изменить статус</div>
+                <select class="select-val" [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+                    @for (s of statuses; track s.value) {
+                    <option [value]="s.value">{{ s.label }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div style="margin-top:14px;">
+            <div class="field-label">Описание</div>
+            <div class="field-val desc">{{ order.description ?? '—' }}</div>
+        </div>
+    </div>
+
+    <!-- Документы и История -->
+    <div class="two-col">
+        <div class="card">
+            <div class="card-title">📄 Документы</div>
+            @for (doc of order.documents; track doc.id) {
+            <div class="doc-row">
+                <span class="doc-icon">📄</span>
+                <span class="doc-name">{{ doc.title }}</span>
+            </div>
+            }
+            @if (order.documents.length === 0) {
+            <div class="empty">Документов нет</div>
+            }
+            <button class="upload-btn">↑ Загрузить документ</button>
+        </div>
+
+        <div class="card">
+            <div class="card-title">🕐 История статусов</div>
+            @for (h of order.history; track h.id) {
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div>
+                    <div class="tl-title">
+                        {{ getStatusLabel(h.old_status) }} → {{ getStatusLabel(h.new_status) }}
+                    </div>
+                    <div class="tl-sub">
+                        {{ formatDate(h.changed_at) }} · {{ h.user?.full_name }}
+                    </div>
+                </div>
+            </div>
+            }
+            @if (order.history.length === 0) {
+            <div class="empty">История пуста</div>
+            }
+        </div>
+    </div>
+    }
+
+    @if (!order) {
+    <div class="empty">Загрузка...</div>
+    }
+
+</div>

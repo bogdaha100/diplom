@@ -1,0 +1,13 @@
+<p-drawer [(visible)]="visible" header="Меню">
+    <a routerLink="/home" routerLinkActive="active">Главная</a>
+    <a routerLink="/orders" routerLinkActive="active">Заказы</a>
+    <a routerLink="/documents" routerLinkActive="active">Документы</a>
+    <a routerLink="/reports" routerLinkActive="active">Отчёты</a>
+    <div class="divider"></div>
+    @if (isAdmin) {
+    <a routerLink="/admin/users" routerLinkActive="active">Пользователи</a>
+    <div class="divider"></div>
+    }
+    <a routerLink="/profile" routerLinkActive="active">Профиль</a>
+    <a (click)="onLogout()">Выход</a>
+</p-drawer>

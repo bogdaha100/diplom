@@ -1,0 +1,79 @@
+<app-topbar (menuClick)="sidebar.open()" />
+<app-sidebar #sidebar />
+
+<div class="page">
+
+    <div class="page-header">
+        <div class="page-title">Документы</div>
+        <p-button label="↑ Загрузить документ" (onClick)="goToUpload()"
+            [style]="{'background': '#185FA5', 'border-color': '#185FA5'}">
+        </p-button>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-label">Всего документов</div>
+            <div class="stat-val">{{ stats.total }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">PDF файлов</div>
+            <div class="stat-val">{{ stats.pdf }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">DOCX файлов</div>
+            <div class="stat-val">{{ stats.docx }}</div>
+        </div>
+    </div>
+
+    <div class="search-row">
+        <input class="search-inp" placeholder="🔍 Поиск по названию..." [(ngModel)]="searchQuery"
+            (input)="onSearch()" />
+        <div class="filter-chip" [class.active]="activeFilter === ''" (click)="onFilter('')">Все</div>
+        <div class="filter-chip" [class.active]="activeFilter === 'PDF'" (click)="onFilter('PDF')">PDF</div>
+        <div class="filter-chip" [class.active]="activeFilter === 'DOCX'" (click)="onFilter('DOCX')">DOCX</div>
+    </div>
+
+    <div class="table">
+        <div class="table-head">
+            <span>Наименование</span>
+            <span>Тип</span>
+            <span>Заказ</span>
+            <span>Загрузил</span>
+            <span>Дата</span>
+            <span></span>
+        </div>
+
+        @for (doc of filteredDocuments; track doc.id) {
+        <div class="table-row">
+            <div class="doc-title">
+                {{ getFileIcon(doc.file_type) }} {{ doc.title }}
+            </div>
+            <span>
+                <span class="badge" [class]="'b-' + doc.file_type.toLowerCase()">
+                    {{ doc.file_type }}
+                </span>
+            </span>
+            <span class="col-text">{{ doc.order?.title ?? '—' }}</span>
+            <span class="col-text">{{ doc.uploader?.full_name ?? '—' }}</span>
+            <span class="col-text">{{ formatDate(doc.uploaded_at) }}</span>
+            <div class="actions">
+                <a [href]="'http://localhost:3000' + doc.file_path" [download]="doc.title"
+                    (click)="$event.stopPropagation()">
+                    <p-button icon="pi pi-download" severity="info" [text]="true" [plain]="true">
+                    </p-button>
+                </a>
+                <p-button icon="pi pi-times" severity="danger" [text]="true" [plain]="true"
+                    (onClick)="onDelete(doc.id)">
+                </p-button>
+            </div>
+        </div>
+        }
+
+        @if (filteredDocuments.length === 0) {
+        <div class="empty">Документов не найдено</div>
+        }
+    </div>
+
+    <p-confirmdialog />
+
+</div>

@@ -1,0 +1,87 @@
+<app-topbar (menuClick)="sidebar.open()" />
+<app-sidebar #sidebar />
+
+<div class="page">
+
+    <!-- Заголовок -->
+    <div class="page-header">
+        <div class="page-title">Заказы</div>
+        <p-button label="+ Создать заказ" (onClick)="goToNewOrder()"
+            [style]="{'background': '#185FA5', 'border-color': '#185FA5'}">
+        </p-button>
+    </div>
+
+    <!-- Статистика -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-label">Всего</div>
+            <div class="stat-val">{{ stats.total }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Новые</div>
+            <div class="stat-val">{{ stats.new }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">В работе</div>
+            <div class="stat-val">{{ stats.inProgress }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Завершены</div>
+            <div class="stat-val">{{ stats.done }}</div>
+        </div>
+    </div>
+
+    <!-- Поиск и фильтры -->
+    <div class="search-row">
+        <input class="search-inp" placeholder="🔍 Поиск по названию..." [(ngModel)]="searchQuery"
+            (input)="onSearch()" />
+        <div class="filter-chip" [class.active]="activeFilter === ''" (click)="onFilter('')">Все</div>
+        <div class="filter-chip" [class.active]="activeFilter === 'new'" (click)="onFilter('new')">Новые</div>
+        <div class="filter-chip" [class.active]="activeFilter === 'in_progress'" (click)="onFilter('in_progress')">В
+            работе</div>
+        <div class="filter-chip" [class.active]="activeFilter === 'done'" (click)="onFilter('done')">Завершены</div>
+    </div>
+
+    @if (loading) {
+    <div class="loading-wrap">
+        <p-progressspinner strokeWidth="4" />
+    </div>
+    }
+
+    <!-- Таблица -->
+    <div class="table">
+        <div class="table-head">
+            <span>Наименование</span>
+            <span>Статус</span>
+            <span>Исполнитель</span>
+            <span>Дедлайн</span>
+            <span></span>
+        </div>
+
+        @for (order of filteredOrders; track order.id) {
+        <div class="table-row" (click)="openOrder(order.id)">
+            <div>
+                <div class="order-title">{{ order.title }}</div>
+                <div class="order-sub">Создал: {{ order.creator?.full_name }}</div>
+            </div>
+            <span>
+                <span class="badge" [class]="'b-' + order.status">
+                    {{ getStatusLabel(order.status) }}
+                </span>
+            </span>
+            <span class="col-text">{{ order.assignee?.full_name ?? 'Не назначен' }}</span>
+            <span class="col-text">{{ formatDate(order.deadline) }}</span>
+            <p-button icon="pi pi-times" severity="danger" [text]="true" [plain]="true"
+                (onClick)="$event.stopPropagation(); onDelete(order.id)">
+            </p-button>
+        </div>
+        }
+
+        @if (filteredOrders.length === 0) {
+        <div class="empty">Заказов не найдено</div>
+        }
+    </div>
+
+    <p-confirmdialog />
+
+</div>

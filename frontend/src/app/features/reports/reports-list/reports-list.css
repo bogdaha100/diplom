@@ -1,0 +1,218 @@
+.page {
+    padding: 24px;
+    background: #F4F9FE;
+    min-height: calc(100vh - 50px);
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0C447C;
+}
+
+.filter-card {
+    background: #fff;
+    border: 0.5px solid #B5D4F4;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    font-size: 13px;
+    color: #185FA5;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.filter-sep {
+    font-size: 13px;
+    color: #378ADD;
+}
+
+.btn-reset {
+    background: transparent;
+    border: 0.5px solid #B5D4F4;
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 13px;
+    color: #185FA5;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-reset:hover {
+    background: #E6F1FB;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 0.5px solid #B5D4F4;
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #185FA5;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.stat-val {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0C447C;
+}
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.card {
+    background: #fff;
+    border: 0.5px solid #B5D4F4;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0C447C;
+    margin-bottom: 16px;
+}
+
+.progress-row {
+    margin-bottom: 14px;
+}
+
+.progress-row:last-child {
+    margin-bottom: 0;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #185FA5;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.progress-bar {
+    height: 10px;
+    background: #E6F1FB;
+    border-radius: 99px;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.3s ease;
+}
+
+.results-info {
+    font-size: 13px;
+    color: #378ADD;
+    margin-bottom: 10px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 0.5px solid #B5D4F4;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead tr {
+    background: #B5D4F4;
+}
+
+.table th {
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0C447C;
+    text-align: left;
+}
+
+.table td {
+    padding: 10px 14px;
+    font-size: 13px;
+    border-bottom: 0.5px solid #E6F1FB;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    background: #F4F9FE;
+}
+
+.order-name {
+    font-weight: 600;
+    color: #0C447C;
+}
+
+.col-text {
+    color: #185FA5;
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.b-new {
+    background: #E6F1FB;
+    color: #0C447C;
+}
+
+.b-in_progress {
+    background: #FAEEDA;
+    color: #633806;
+}
+
+.b-done {
+    background: #EAF3DE;
+    color: #27500A;
+}
+
+.empty {
+    padding: 20px;
+    text-align: center;
+    color: #378ADD;
+    font-size: 13px;
+}
+
+:host ::ng-deep .date-picker {
+    width: 160px;
+}
