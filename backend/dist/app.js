@@ -1,0 +1,28 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import authRoutes from './routes/auth.routes.js';
+import homeRoutes from './routes/home.routes.js';
+import ordersRoutes from './routes/orders.routes.js';
+import documentsRoutes from './routes/documents.routes.js';
+import adminRoutes from './routes/admin.routes.js';
+import reportsRoutes from './routes/reports.routes.js';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config();
+const app = express();
+const PORT = process.env.PORT || 3000;
+app.use(cors({ origin: 'http://localhost:4200' }));
+app.use(express.json());
+app.use('/uploads', express.static(join(__dirname, '../uploads')));
+app.use('/api/auth', authRoutes);
+app.use('/api/home', homeRoutes);
+app.use('/api/orders', ordersRoutes);
+app.use('/api/documents', documentsRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/reports', reportsRoutes);
+app.listen(PORT, () => {
+    console.log(`Сервер запущен на порту ${PORT}`);
+});
