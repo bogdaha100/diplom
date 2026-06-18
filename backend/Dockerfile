@@ -26,7 +26,7 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY entrypoint.sh ./entrypoint.sh
 
-RUN chmod +x entrypoint.sh && mkdir -p uploads
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/* && chmod +x entrypoint.sh && mkdir -p uploads
 
 EXPOSE 3000
 ENTRYPOINT ["./entrypoint.sh"]
