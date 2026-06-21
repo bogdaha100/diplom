@@ -53,7 +53,7 @@
             @for (doc of order.documents; track doc.id) {
             <div class="doc-row">
                 <span class="doc-icon">📄</span>
-                <span class="doc-name">{{ doc.title }}</span>
+                <a [href]="doc.file_path" [download]="doc.title" class="doc-name">{{ doc.title }}</a>
             </div>
             }
             @if (order.documents.length === 0) {

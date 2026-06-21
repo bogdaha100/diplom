@@ -137,6 +137,13 @@
     color: #0C447C;
     flex: 1;
     font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.doc-name:hover {
+    text-decoration: underline;
+    color: #185FA5;
 }
 
 .upload-btn {

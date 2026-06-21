@@ -57,8 +57,7 @@
             <span class="col-text">{{ doc.uploader?.full_name ?? '—' }}</span>
             <span class="col-text">{{ formatDate(doc.uploaded_at) }}</span>
             <div class="actions">
-                <a [href]="'http://localhost:3000' + doc.file_path" [download]="doc.title"
-                    (click)="$event.stopPropagation()">
+                <a [href]="doc.file_path" [download]="doc.title" (click)="$event.stopPropagation()">
                     <p-button icon="pi pi-download" severity="info" [text]="true" [plain]="true">
                     </p-button>
                 </a>
