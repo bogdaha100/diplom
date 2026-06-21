@@ -59,7 +59,11 @@
             @if (order.documents.length === 0) {
             <div class="empty">Документов нет</div>
             }
-            <button class="upload-btn">↑ Загрузить документ</button>
+            <input #fileInput type="file" style="display:none" accept=".pdf,.docx,.xlsx"
+                (change)="onFileSelected($event)" />
+            <button class="upload-btn" (click)="fileInput.click()" [disabled]="uploading">
+                @if (uploading) { Загрузка... } @else { ↑ Загрузить документ }
+            </button>
         </div>
 
         <div class="card">

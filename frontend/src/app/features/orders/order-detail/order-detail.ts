@@ -6,6 +6,7 @@ import { Sidebar } from '../../../shared/components/sidebar/sidebar';
 import { Topbar } from '../../../shared/components/topbar/topbar';
 
 import { Orders } from '../../../core/services/orders';
+import { DocumentsService } from '../../../core/services/documents';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
 
@@ -24,6 +25,7 @@ export class OrderDetail implements OnInit {
   order: any = null;
   selectedStatus: string = '';
   user: any = null;
+  uploading: boolean = false;
 
   statuses = [
     { label: 'Новый', value: 'new' },
@@ -35,6 +37,7 @@ export class OrderDetail implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private ordersService: Orders,
+    private documentsService: DocumentsService,
     private authService: AuthService,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
@@ -75,6 +78,45 @@ export class OrderDetail implements OnInit {
       },
       error: (err) => {
         this.toastService.error('Ошибка обновления статуса');
+        console.error(err);
+      }
+    });
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.uploadFile(file);
+    }
+    event.target.value = '';
+  }
+
+  uploadFile(file: File) {
+    if (!this.order || !this.user) return;
+
+    this.uploading = true;
+
+    const formData = new FormData();
+    formData.append('title', file.name);
+    formData.append('order_id', String(this.order.id));
+    formData.append('uploaded_by', String(this.user.id));
+    formData.append('file', file);
+
+    this.documentsService.uploadDocument(formData).subscribe({
+      next: () => {
+        this.ngZone.run(() => {
+          this.uploading = false;
+          this.toastService.success('Документ успешно загружен');
+          this.loadOrder(this.order.id);
+          this.cdr.markForCheck();
+        });
+      },
+      error: (err) => {
+        this.ngZone.run(() => {
+          this.uploading = false;
+          this.toastService.error('Ошибка загрузки документа');
+          this.cdr.markForCheck();
+        });
         console.error(err);
       }
     });
