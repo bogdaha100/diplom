@@ -33,6 +33,15 @@ export class Home implements OnInit {
     this.loadStats();
   }
 
+  getStatusLabel(status: string): string {
+    const labels: any = {
+      new: 'Новый',
+      in_progress: 'В работе',
+      done: 'Завершён'
+    };
+    return labels[status] || status;
+  }
+
   loadStats() {
     this.ordersService.getStats().subscribe({
       next: (data) => {

@@ -47,7 +47,7 @@
             <div class="order-row">
                 <span class="order-num">#{{ order.id }}</span>
                 <span class="order-name">{{ order.title }}</span>
-                <span class="badge" [class]="'b-' + order.status">{{ order.status }}</span>
+                <span class="badge" [class]="'b-' + order.status">{{ getStatusLabel(order.status) }}</span>
             </div>
             }
             @if (latestOrders.length === 0) {
