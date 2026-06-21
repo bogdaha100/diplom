@@ -37,7 +37,7 @@ export class ReportsList implements OnInit {
   }
 
   loadReports() {
-    this.http.get<any>('http://localhost:3000/api/reports').subscribe({
+    this.http.get<any>('/api/reports').subscribe({
       next: (data) => {
         this.ngZone.run(() => {
           this.allOrders = data.orders;
